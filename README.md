@@ -2,7 +2,7 @@
 
 BEACON is findability: the metadata a shipped page must carry so it represents itself correctly to search engines, social shares, and machines. A page with no title tag, no canonical, and no Open Graph tags renders fine for a person and is nearly invisible to everything else. When a link to it is shared, the preview is a bare URL with no title and no image; when a crawler or an AI agent reads it, there is nothing to read. BEACON gives you that metadata, correct and complete, themed to your content.
 
-It is **in progress** toward the full findability set (see the scope note). Built so far: Tier 1, the head essentials (title, description, canonical, robots, viewport, charset) plus Open Graph and Twitter cards; and Tier 2, schema.org structured data, the sitemap and robots.txt serializers, and favicon and manifest. A findability auditor and llms.txt follow.
+It covers its findability set across Tiers 1 to 3: Tier 1, the head essentials (title, description, canonical, robots, viewport, charset) plus Open Graph and Twitter cards; Tier 2, schema.org structured data, the sitemap and robots.txt serializers, and favicon and manifest; and Tier 3, a findability auditor and an llms.txt serializer. It stays **0.x** until a numbered release is cut.
 
 ## Why it generates a string, not runtime tags
 
@@ -91,6 +91,26 @@ import { JsonLd, Icons, article } from 'beacon-ui/react'
 ```
 
 The sitemap, robots.txt, and manifest are build-time files, so they have no React component; call the serializers and write their output.
+
+## Auditing a page
+
+`audit(html)` scans a page's HTML and returns `{ ok, errors, warnings, passed }`, each a list of `{ level, code, message }`. It checks the head essentials, Open Graph and Twitter, JSON-LD validity, and the canonical-versus-`og:url` agreement invariant. To test the render gate, audit the raw server response (fetched without JavaScript), since the tags must be there for the non-JS scrapers; BEACON does not fetch, so you pass it the HTML.
+
+```js
+import { audit, llmstxt } from 'beacon-ui'
+
+const report = audit(serverHtmlString)
+if (!report.ok) console.error(report.errors)
+
+// llms.txt, an emerging convention (not consumed by the major engines):
+llmstxt({
+  name: 'Example',
+  summary: 'What Example does, in one line.',
+  sections: [{ title: 'Docs', links: [{ title: 'Getting started', url: 'https://example.com/start' }] }],
+})
+```
+
+This is a lightweight scan of the served markup, not a full validator; pair it with Google's Rich Results Test for schema eligibility.
 
 ## Two invariants it helps you hold
 

@@ -209,3 +209,99 @@ export function manifest(d = {}) {
     icons: d.icons,
   }), null, 2);
 }
+
+// --- Tier 3: the findability auditor and llms.txt ---
+
+// Parse the attributes of every <meta> or <link> tag in an HTML string, so a
+// check can look a tag up by attribute in any order. A lightweight scan, not a
+// full HTML parser; it reads the served markup, which is the point.
+function tagAttrs(html, tag) {
+  const out = [];
+  const re = new RegExp('<' + tag + '\\b([^>]*)>', 'gi');
+  let m;
+  while ((m = re.exec(html))) {
+    const attrs = {};
+    const ar = /([\w:-]+)\s*=\s*"([^"]*)"|([\w:-]+)\s*=\s*'([^']*)'/g;
+    let a;
+    while ((a = ar.exec(m[1]))) {
+      if (a[1] != null) attrs[a[1].toLowerCase()] = a[2];
+      else attrs[a[3].toLowerCase()] = a[4];
+    }
+    out.push(attrs);
+  }
+  return out;
+}
+
+// Audit a page's HTML for the findability signals, returning
+// { ok, errors, warnings, passed }, each a list of { level, code, message }.
+// Pass the HTML you want to judge: to test the render gate, fetch the raw server
+// response (no JavaScript) and audit that, since the tags must be there for the
+// non-JS social and AI scrapers. BEACON does not fetch; keeping it pure.
+export function audit(html = '') {
+  const errors = [], warnings = [], passed = [];
+  const err = (code, message) => errors.push({ level: 'error', code, message });
+  const warn = (code, message) => warnings.push({ level: 'warning', code, message });
+  const pass = (code, message) => passed.push({ level: 'pass', code, message });
+
+  const metas = tagAttrs(html, 'meta');
+  const links = tagAttrs(html, 'link');
+  const metaByName = (n) => metas.find((t) => t.name === n);
+  const metaByProp = (p) => metas.find((t) => t.property === p);
+
+  if (metas.some((t) => 'charset' in t)) pass('charset', 'Charset is declared.');
+  else err('charset', 'No <meta charset>. Add <meta charset="utf-8"> first in <head>.');
+
+  if (metaByName('viewport')) pass('viewport', 'Viewport is set.');
+  else warn('viewport', 'No viewport meta; mobile rendering, which is what Google indexes, degrades.');
+
+  const titles = [...html.matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gi)].map((m) => m[1].trim());
+  if (!titles.length || !titles[0]) err('title', 'No non-empty <title>; it is the primary search result text.');
+  else {
+    if (titles.length > 1) warn('title-duplicate', `${titles.length} <title> tags found; there should be one.`);
+    if (titles[0].length > 60) warn('title-length', `Title is ${titles[0].length} characters; it may truncate in results.`);
+    pass('title', 'Title is present.');
+  }
+
+  if (metaByName('description')) pass('description', 'Description is present.');
+  else warn('description', 'No meta description; the engine will synthesize a snippet.');
+
+  const canonical = links.find((l) => (l.rel || '').split(/\s+/).includes('canonical'))?.href;
+  if (!canonical) warn('canonical', 'No rel=canonical; the engine will pick a canonical for you.');
+  else if (!/^https?:\/\//i.test(canonical)) err('canonical-absolute', 'Canonical must be an absolute URL, not relative.');
+  else pass('canonical', 'Canonical is present and absolute.');
+
+  const ogUrl = metaByProp('og:url')?.content;
+  const ogCore = ['og:title', 'og:type', 'og:image', 'og:url'];
+  const ogMissing = ogCore.filter((p) => !metaByProp(p));
+  if (!ogMissing.length) pass('open-graph', 'Open Graph core is present.');
+  else warn('open-graph', `Missing Open Graph ${ogMissing.join(', ')}; social and AI link previews degrade.`);
+
+  if (metaByName('twitter:card')) pass('twitter', 'Twitter card is declared.');
+  else warn('twitter', 'No twitter:card; X falls back to Open Graph, but the card type is best set.');
+
+  if (canonical && ogUrl && canonical !== ogUrl) warn('agreement', `Canonical (${canonical}) and og:url (${ogUrl}) differ; they should name the same URL.`);
+
+  const ld = [...html.matchAll(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1]);
+  if (!ld.length) warn('structured-data', 'No JSON-LD structured data; rich results are unavailable.');
+  ld.forEach((block, i) => {
+    try { JSON.parse(block); pass('structured-data', `JSON-LD block ${i + 1} parses.`); }
+    catch { err('structured-data-invalid', `JSON-LD block ${i + 1} is not valid JSON.`); }
+  });
+
+  return { ok: errors.length === 0, errors, warnings, passed };
+}
+
+// Serialize an llms.txt (an emerging convention, not a ratified standard, and
+// not consumed by the major search engines). Pass name (required), summary,
+// notes, and sections of { title, links: [{ title, url, note }] }.
+export function llmstxt(d = {}) {
+  const out = [`# ${d.name || 'Site'}`, ''];
+  if (d.summary) out.push(`> ${d.summary}`, '');
+  if (d.notes) out.push(d.notes, '');
+  for (const section of (d.sections || [])) {
+    out.push(`## ${section.title}`, '');
+    for (const l of (section.links || [])) out.push(`- [${l.title}](${l.url})${l.note ? ': ' + l.note : ''}`);
+    out.push('');
+  }
+  return out.join('\n').replace(/\n+$/, '\n');
+}
