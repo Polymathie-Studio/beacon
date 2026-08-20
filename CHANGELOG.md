@@ -1,0 +1,12 @@
+# Changelog
+
+All notable changes to BEACON are recorded here. This project has not yet cut a numbered release; changes below are unreleased. BEACON is in progress toward the full findability set (see the scope note); this is Tier 1.
+
+## Unreleased
+
+### Added
+
+- Tier 1, the head essentials plus social cards: `head(metadata)` returns the findability `<head>` tags as a string for server-render or build time, so the metadata lands in the server HTML where non-JS crawlers and social scrapers read it. It emits, in order, a UTF-8 charset, a viewport, the title, meta description, canonical link, an optional robots directive, the Open Graph tags (title, type, url, description, site_name, locale, and image with its sub-properties), and the Twitter card (which falls back to Open Graph). `og:url` defaults to the canonical so the two agree, and every value is HTML-escaped. A `htmlAttrs(metadata)` helper returns the `lang` attribute for `<html>`.
+- The React binding (`beacon-ui/react`): `Head`, which renders the same tags as elements; React 19 hoists them to `<head>`.
+- Build and SSR-time by design: BEACON does not inject tags at runtime, because runtime injection is invisible to the social and AI scrapers that do not run JavaScript. This is a deliberate divergence from the runtime-component shape of the other Polymathie primitives.
+- Family hygiene: Apache-2.0 license and notice, zero-dependency core, framework binding as an optional peer, and the Polymathie family section in the README.
