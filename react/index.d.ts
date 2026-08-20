@@ -40,3 +40,52 @@ export interface BeaconMeta {
 
 /** Render the findability head tags as elements. React 19 hoists them to <head>. */
 export function Head(data?: BeaconMeta): ReactElement
+
+/** A schema.org object: an @type plus its fields. Produced by the builders below. */
+export interface SchemaObject { '@type': string; [key: string]: unknown }
+
+export interface OrganizationData { name?: string; url?: string; logo?: string; sameAs?: string[] }
+export function organization(data?: OrganizationData): SchemaObject
+
+export interface WebsiteData { name?: string; url?: string; searchUrl?: string }
+export function website(data?: WebsiteData): SchemaObject
+
+export interface ArticleData {
+  type?: string
+  title?: string
+  headline?: string
+  image?: string
+  datePublished?: string
+  dateModified?: string
+  author?: string | Record<string, unknown>
+  publisher?: Record<string, unknown>
+}
+export function article(data?: ArticleData): SchemaObject
+
+export interface ProductData {
+  name?: string
+  image?: string
+  description?: string
+  price?: number | string
+  currency?: string
+  availability?: string
+}
+export function product(data?: ProductData): SchemaObject
+
+export interface BreadcrumbItem { name?: string; url?: string }
+export function breadcrumb(items?: BreadcrumbItem[]): SchemaObject
+
+/** Render a JSON-LD script from one schema.org object or an array (combined under @graph). */
+export interface JsonLdProps { schema: SchemaObject | SchemaObject[] }
+export function JsonLd(props: JsonLdProps): ReactElement
+
+/** Favicon and icon link tags. React 19 hoists them to <head>. */
+export interface IconsData {
+  icon?: string
+  iconType?: string
+  svg?: string
+  appleTouchIcon?: string
+  manifest?: string
+  themeColor?: string
+}
+export function Icons(data?: IconsData): ReactElement

@@ -5,6 +5,11 @@
 // manager, since 18 does not hoist. No build step.
 
 import { createElement as h, Fragment } from 'react'
+import { jsonLdInner } from '../beacon.js'
+
+// The schema.org builders are re-exported so a React app can import them and the
+// components from one place: `import { JsonLd, article } from 'beacon-ui/react'`.
+export { organization, website, article, product, breadcrumb } from '../beacon.js'
 
 export function Head(data = {}) {
   const el = []
@@ -38,5 +43,23 @@ export function Head(data = {}) {
   if (data.twitterCreator) el.push(h('meta', { name: 'twitter:creator', content: data.twitterCreator, key: 'twcr' }))
   if (data.twitterImageAlt || data.imageAlt) el.push(h('meta', { name: 'twitter:image:alt', content: data.twitterImageAlt || data.imageAlt, key: 'twia' }))
 
+  return h(Fragment, null, ...el)
+}
+
+// Render a JSON-LD script from one schema.org object or an array. Uses the core
+// serialization (with the </script> escaping), injected raw, because React would
+// HTML-escape text children and break the JSON.
+export function JsonLd({ schema }) {
+  return h('script', { type: 'application/ld+json', dangerouslySetInnerHTML: { __html: jsonLdInner(schema) } })
+}
+
+// Render the favicon and icon link tags. React 19 hoists them to <head>.
+export function Icons(data = {}) {
+  const el = []
+  if (data.svg) el.push(h('link', { rel: 'icon', href: data.svg, type: 'image/svg+xml', key: 'svg' }))
+  if (data.icon) el.push(h('link', { rel: 'icon', href: data.icon, ...(data.iconType ? { type: data.iconType } : {}), key: 'icon' }))
+  if (data.appleTouchIcon) el.push(h('link', { rel: 'apple-touch-icon', href: data.appleTouchIcon, key: 'ati' }))
+  if (data.manifest) el.push(h('link', { rel: 'manifest', href: data.manifest, key: 'mani' }))
+  if (data.themeColor) el.push(h('meta', { name: 'theme-color', content: data.themeColor, key: 'tc' }))
   return h(Fragment, null, ...el)
 }

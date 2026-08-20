@@ -2,7 +2,7 @@
 
 BEACON is findability: the metadata a shipped page must carry so it represents itself correctly to search engines, social shares, and machines. A page with no title tag, no canonical, and no Open Graph tags renders fine for a person and is nearly invisible to everything else. When a link to it is shared, the preview is a bare URL with no title and no image; when a crawler or an AI agent reads it, there is nothing to read. BEACON gives you that metadata, correct and complete, themed to your content.
 
-It is **in progress** toward the full findability set (see the scope note). This is Tier 1: the head essentials (title, description, canonical, robots, viewport, charset) plus Open Graph and Twitter cards. Structured data, sitemap, robots.txt, favicon, and a findability auditor follow.
+It is **in progress** toward the full findability set (see the scope note). Built so far: Tier 1, the head essentials (title, description, canonical, robots, viewport, charset) plus Open Graph and Twitter cards; and Tier 2, schema.org structured data, the sitemap and robots.txt serializers, and favicon and manifest. A findability auditor and llms.txt follow.
 
 ## Why it generates a string, not runtime tags
 
@@ -60,6 +60,37 @@ On React 18, which does not hoist, place `Head` where head content belongs or us
 ## What it generates
 
 From one flat object, `head()` emits, in order: a UTF-8 charset (first, so every text field below is decoded correctly), a viewport, the `<title>`, the meta description, the canonical link, an optional robots directive, the Open Graph tags (`og:title`, `og:type`, `og:url`, `og:description`, `og:site_name`, `og:locale`, and the image with its sub-properties), and the Twitter card (which falls back to the Open Graph tags, so only the card type is required). Every value is HTML-escaped.
+
+## Structured data and site files
+
+The schema.org builders return plain objects; `jsonLd` serializes one or several (combined under `@graph`) into a script tag, with the `</script>` sequence escaped so it cannot break out. The site files are pure serializers you write at build time.
+
+```js
+import { jsonLd, organization, website, article, breadcrumb, sitemap, robots, icons, manifest } from 'beacon-ui'
+
+// JSON-LD in <head>: compose builders, serialize once.
+const ld = jsonLd([
+  organization({ name: 'Example', url: 'https://example.com', logo: 'https://example.com/logo.png', sameAs: ['https://x.com/example'] }),
+  website({ name: 'Example', url: 'https://example.com' }),
+])
+
+// Root files, written at build time:
+sitemap([{ loc: 'https://example.com/', lastmod: '2026-08-19' }, 'https://example.com/pricing'])
+robots({ sitemap: 'https://example.com/sitemap.xml', disallow: '/admin' })
+manifest({ name: 'Example', shortName: 'Ex', themeColor: '#1e4e8c', icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png' }] })
+icons({ svg: '/icon.svg', appleTouchIcon: '/apple-touch-icon.png', manifest: '/site.webmanifest' })
+```
+
+In React, `JsonLd` and `Icons` render the head-going pieces, and the schema builders are re-exported from `beacon-ui/react`:
+
+```tsx
+import { JsonLd, Icons, article } from 'beacon-ui/react'
+
+<JsonLd schema={article({ title: 'A post', author: 'Regis', datePublished: '2026-08-19' })} />
+<Icons svg="/icon.svg" appleTouchIcon="/apple-touch-icon.png" manifest="/site.webmanifest" />
+```
+
+The sitemap, robots.txt, and manifest are build-time files, so they have no React component; call the serializers and write their output.
 
 ## Two invariants it helps you hold
 
