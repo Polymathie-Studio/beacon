@@ -117,9 +117,18 @@ This is a lightweight scan of the served markup, not a full validator; pair it w
 - **Agreement.** The canonical URL, `og:url`, and (later) the sitemap entry for a page should name the same absolute URL. BEACON defaults `og:url` to your canonical so they cannot drift.
 - **Separation.** Keeping a page out of the index is the `robots` directive's job (`noindex`), not robots.txt. BEACON puts index control where it belongs, in the head.
 
-## Part of the Polymathie family
+## Part of DS4AI, the Design Suite for AI
 
-BEACON is one of the [Polymathie](https://github.com/Polymathie-Studio) primitives: small, dependency-free pieces for building websites, dashboards, and tools, where each protects one posture that fast, AI-assisted building tends to drop. Its siblings are [TEMPER](https://github.com/Polymathie-Studio/temper) (legibility and design tokens), [LUCID](https://github.com/Polymathie-Studio/lucid) (honest disclosure), [HASP](https://github.com/Polymathie-Studio/hasp) (bring-your-own-key privacy), [GRACE](https://github.com/Polymathie-Studio/grace) (off-happy-path states), and [GRASP](https://github.com/Polymathie-Studio/grasp) (operable interaction components). Where the others are runtime pieces, BEACON is a build and SSR-time generator, because findability metadata has to be in the served HTML.
+BEACON is one instrument in **DS4AI, the Design Suite for AI, from [Polymathie-Studio](https://github.com/Polymathie-Studio)**: small, dependency-free pieces that each close one axis of the *invisible-correctness layer*, the part of a shipped surface a look-at-it review cannot see and that fast, AI-assisted building drops.
+
+- **[TEMPER](https://github.com/Polymathie-Studio/temper)**: perceivable, color and design tokens
+- **[GRASP](https://github.com/Polymathie-Studio/grasp)**: operable, interaction components
+- **[LUCID](https://github.com/Polymathie-Studio/lucid)** + **[GRACE](https://github.com/Polymathie-Studio/grace)**: honest off the happy path, disclosure and state components
+- **[HASP](https://github.com/Polymathie-Studio/hasp)**: key privacy, bring-your-own-key
+- **[BEACON](https://github.com/Polymathie-Studio/beacon)**: findable, head metadata and site files
+- **[FLEET](https://github.com/Polymathie-Studio/fleet)**: fast and stable, delivery
+
+**[MISSING](https://github.com/Polymathie-Studio/missing)** is the standard at the center of DS4AI: it names the axes, routes each to its instrument, and ships a machine-readable manifest and a conformance auditor. Adopt one and the others compose with it.
 
 ## License
 
