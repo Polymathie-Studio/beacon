@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" font-family="system-ui, -apple-system, sans-serif">
+<rect width="1200" height="640" fill="#F0F4F9"/>
+<text x="60" y="78" font-size="44" font-weight="700" fill="#17181A">BEACON</text>
+<text x="248" y="78" font-size="20" fill="#3F4143">Broadcasts Every Author Claim Openly to Networks</text>
+<text x="60" y="112" font-size="18" font-style="italic" fill="#1E4E8C">A page that says what it is, to everything that reads it.</text>
+<rect x="60" y="145" width="330" height="300" rx="10" fill="#FFFFFF" stroke="#C9CDD1"/>
+<text x="84" y="185" font-size="16" font-weight="700" fill="#3F4143">Why It Exists</text>
+<text x="84" y="218" font-size="17" font-weight="600" fill="#17181A">Scrapers do not run JS.</text>
+<text x="84" y="240" font-size="15" fill="#3F4143">Social and AI crawlers fetch</text>
+<text x="84" y="260" font-size="15" fill="#3F4143">the raw HTML, not your app.</text>
+<text x="84" y="296" font-size="17" font-weight="600" fill="#17181A">Tags added later</text>
+<text x="84" y="318" font-size="15" fill="#3F4143">are tags they never see;</text>
+<text x="84" y="338" font-size="15" fill="#3F4143">the demo hides the gap.</text>
+<text x="84" y="374" font-size="17" font-weight="600" fill="#17181A">A shared link</text>
+<text x="84" y="396" font-size="15" fill="#3F4143">shows a bare URL: no title,</text>
+<text x="84" y="416" font-size="15" fill="#3F4143">no image, no description.</text>
+<rect x="420" y="145" width="400" height="300" rx="10" fill="#FFFFFF" stroke="#C9CDD1"/>
+<text x="444" y="185" font-size="16" font-weight="700" fill="#3F4143">What It Generates</text>
+<text x="444" y="220" font-size="16" font-weight="600" fill="#17181A">Head essentials</text>
+<text x="444" y="240" font-size="15" fill="#3F4143">title, description, canonical, robots</text>
+<text x="444" y="272" font-size="16" font-weight="600" fill="#17181A">Open Graph and Twitter cards</text>
+<text x="444" y="292" font-size="15" fill="#3F4143">a shared link previews correctly</text>
+<text x="444" y="324" font-size="16" font-weight="600" fill="#17181A">schema.org, sitemap, robots.txt</text>
+<text x="444" y="344" font-size="15" fill="#3F4143">structured data and the site files</text>
+<text x="444" y="378" font-size="15" fill="#3F4143">Emitted as a string in the server HTML,</text>
+<text x="444" y="398" font-size="15" fill="#3F4143">at build or render time, so every</text>
+<text x="444" y="418" font-size="15" fill="#3F4143">consumer reads it without running JS.</text>
+<rect x="850" y="145" width="290" height="300" rx="10" fill="#FFFFFF" stroke="#C9CDD1"/>
+<text x="874" y="185" font-size="16" font-weight="700" fill="#3F4143">Checked, Not Assumed</text>
+<text x="874" y="236" font-size="40" font-weight="700" fill="#255D34">Tiers 1&#8211;3</text>
+<text x="874" y="264" font-size="15" fill="#3F4143">head, cards, structured</text>
+<text x="874" y="284" font-size="15" fill="#3F4143">data, and the site files.</text>
+<text x="874" y="324" font-size="16" font-weight="600" fill="#17181A">A runnable audit</text>
+<text x="874" y="344" font-size="15" fill="#3F4143">checks a page against the</text>
+<text x="874" y="364" font-size="15" fill="#3F4143">standard, before it ships.</text>
+<text x="874" y="400" font-size="16" font-weight="600" fill="#17181A">Output is escaped,</text>
+<text x="874" y="420" font-size="15" fill="#3F4143">never an injection vector.</text>
+<rect x="60" y="480" width="1080" height="110" rx="10" fill="#FFFFFF" stroke="#C9CDD1"/>
+<text x="84" y="516" font-size="16" font-weight="700" fill="#3F4143">Against the Field</text>
+<text x="84" y="544" font-size="16" font-weight="600" fill="#1E4E8C">vs runtime injectors</text>
+<text x="84" y="564" font-size="14" fill="#3F4143">lands in the server HTML,</text>
+<text x="84" y="581" font-size="14" fill="#3F4143">not post-load tags</text>
+<text x="349" y="544" font-size="16" font-weight="600" fill="#1E4E8C">vs SEO plugins</text>
+<text x="349" y="564" font-size="14" fill="#3F4143">zero-dependency, themeable,</text>
+<text x="349" y="581" font-size="14" fill="#3F4143">nothing calls home</text>
+<text x="614" y="544" font-size="16" font-weight="600" fill="#1E4E8C">vs framework magic</text>
+<text x="614" y="564" font-size="14" fill="#3F4143">one portable string,</text>
+<text x="614" y="581" font-size="14" fill="#3F4143">any stack or none</text>
+<text x="879" y="544" font-size="16" font-weight="600" fill="#1E4E8C">vs no metadata</text>
+<text x="879" y="564" font-size="14" fill="#3F4143">the preview stops being</text>
+<text x="879" y="581" font-size="14" fill="#3F4143">a bare dead link</text>
+<text x="1140" y="622" font-size="13" fill="#3F4143" text-anchor="end">Apache-2.0 &#183; part of DS4AI, the Design Suite for AI</text>
+</svg>

@@ -1,5 +1,10 @@
 # BEACON
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/beacon-overview-dark.svg">
+  <img alt="BEACON overview: why it exists (scrapers do not run JS, so tags added later are invisible to them and a shared link shows a bare URL), what it generates (head essentials, Open Graph and Twitter cards, schema.org structured data, sitemap, robots.txt, emitted as a string in the server HTML at build or render time), that it is checked by a runnable audit across Tiers 1 to 3, and how it differs from runtime injectors, SEO plugins, framework magic, and no metadata at all." src="assets/beacon-overview-light.svg" width="1200">
+</picture>
+
 BEACON is findability: the metadata a shipped page must carry so it represents itself correctly to search engines, social shares, and machines. A page with no title tag, no canonical, and no Open Graph tags renders fine for a person and is nearly invisible to everything else. When a link to it is shared, the preview is a bare URL with no title and no image; when a crawler or an AI agent reads it, there is nothing to read. BEACON gives you that metadata, correct and complete, themed to your content.
 
 It covers its findability set across Tiers 1 to 3: Tier 1, the head essentials (title, description, canonical, robots, viewport, charset) plus Open Graph and Twitter cards; Tier 2, schema.org structured data, the sitemap and robots.txt serializers, and favicon and manifest; and Tier 3, a findability auditor and an llms.txt serializer. It stays **0.x** until a numbered release is cut.
@@ -124,7 +129,7 @@ BEACON is one instrument in **DS4AI, the Design Suite for AI, from [Polymathie-S
 - **[TEMPER](https://github.com/Polymathie-Studio/temper)**: perceivable, color and design tokens
 - **[GRASP](https://github.com/Polymathie-Studio/grasp)**: operable, interaction components
 - **[LUCID](https://github.com/Polymathie-Studio/lucid)** + **[GRACE](https://github.com/Polymathie-Studio/grace)**: honest off the happy path, disclosure and state components
-- **[HASP](https://github.com/Polymathie-Studio/hasp)**: key privacy, bring-your-own-key
+- **[HASP](https://github.com/Polymathie-Studio/hasp)**: hardened, client-surface security posture
 - **[BEACON](https://github.com/Polymathie-Studio/beacon)**: findable, head metadata and site files
 - **[FLEET](https://github.com/Polymathie-Studio/fleet)**: fast and stable, delivery
 
